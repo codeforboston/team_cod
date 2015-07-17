@@ -11,20 +11,23 @@ class User < ActiveRecord::Base
     Event.for_topics(self.topics.to_a)
   end
 
-  def self.create_with_random_password!(opts)
+  # Validations won't allow us to create with *no* password, which
+  # would otherwise be desirable for "fake registrations" (create
+  # thru console or by authorized admin, then go thru recovery to
+  # assign password).  So, generate a strong random pw, and throw
+  # it away...
 
-    # Validations won't allow us to create with *no* password, which
-    # would otherwise be desirable for "fake registrations" (create
-    # thru console or by authorized admin, then go thru recovery to
-    # assign password).  So, generate a strong random pw, and throw
-    # it away...
-
-    pw = File.open('/dev/urandom', 'r') do |f|
+  def set_random_password
+    self.password = File.open('/dev/urandom', 'r') do |f|
       Base64.encode64(f.read(10)).chomp
     end
+  end
 
-    self.create!(opts.merge(password: pw))
-
+  def self.create_with_random_password!(opts)
+    user = User.new opts
+    user.set_random_password
+    user.save!
+    user
   end
 
 end

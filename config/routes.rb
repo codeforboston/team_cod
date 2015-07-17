@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     patch 'users/:id' => 'devise/registrations#update', :as => 'user_registration'            
   end 
   resources :users
+  resource :admin
   resources :contact
   resources :listings, controller: 'events', as: 'events' do
     collection do

@@ -1,0 +1,30 @@
+<div class="container">
+<h1>Add listings editor (by email)</h1>
+
+<p>
+Once you do this, they will be able to use the "forgot password" feature
+to assign themselves a password and log in.
+</p>
+
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= form_for(@user, url: admin_url, method: :patch) do |f| %>
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.text_field :email, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit %>
+  </div>
+<% end %>
+</div>
