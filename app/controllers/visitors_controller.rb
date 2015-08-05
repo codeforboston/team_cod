@@ -97,7 +97,7 @@ class VisitorsController < ApplicationController
     {
       key: :time,
       value: :both,
-      text: "Both"
+      text: "Either"
     }
   end
 end
